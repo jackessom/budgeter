@@ -1,0 +1,84 @@
+{
+  "name": "budgeter",
+  "version": "0.1.0",
+  "description": "An app to track common monthly ingoings and outgoings, those special things you buy and see the state of your money in future months.",
+  "main": "src/index.jsx",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/jackessom/budgeter"
+  },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "jest"
+  },
+  "author": "Jack Essom",
+  "license": "ISC",
+  "dependencies": {
+    "normalize.css": "^5.0.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.18.0",
+    "babel-eslint": "^7.1.0",
+    "babel-jest": "^19.0.0",
+    "babel-loader": "^6.2.7",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "babel-preset-stage-3": "^6.17.0",
+    "css-loader": "^0.26.1",
+    "dotenv": "^4.0.0",
+    "eslint": "^3.9.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-loader": "^1.6.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.4.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.10.0",
+    "html-webpack-plugin": "^2.24.1",
+    "jest": "^19.0.2",
+    "opn": "^4.0.2",
+    "postcss": "^5.2.15",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-loader": "^1.3.2",
+    "react-hot-loader": "^1.3.1",
+    "react-test-renderer": "^15.4.2",
+    "style-loader": "^0.13.1",
+    "stylelint": "^7.9.0",
+    "stylelint-config-standard": "^16.0.0",
+    "svg-loader": "0.0.2",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.3",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-3"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "rules": {
+      "no-console": 0,
+      "no-undef": 0,
+      "linebreak-style": 0,
+      "react/forbid-prop-types": 0
+    },
+    "globals": {
+      "document": true
+    }
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/configs/jest/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/configs/jest/styleMock.js"
+    }
+  }
+}

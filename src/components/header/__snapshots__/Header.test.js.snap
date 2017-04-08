@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header shows name 1`] = `
+<div
+  className="header"
+>
+  <h1>
+    Hello, 
+    World
+  </h1>
+</div>
+`;
