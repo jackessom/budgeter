@@ -1,0 +1,28 @@
+.title {
+  width: 100%;
+
+  & div {
+    width: 100%;
+    position: relative;
+    padding: 0 36px;
+  }
+
+  & h5,
+  & p {
+    text-align: center;
+  }
+}
+
+.navLeft,
+.navRight {
+  position: absolute;
+  top: 0;
+}
+
+.navLeft {
+  left: -7px;
+}
+
+.navRight {
+  right: -7px;
+}

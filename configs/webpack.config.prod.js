@@ -32,9 +32,9 @@ module.exports = {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(
           'style',
-          'css',
+          'css&modules',
           'postcss-loader'
-        )
+        ),
       },
       {
         test: /\.json$/,
@@ -90,7 +90,10 @@ module.exports = {
   ],
   postcss: function (webpack) {
     return [
-      require("stylelint")(),
+      require("stylelint")({
+        context: 'src'
+      }),
+      require("postcss-import")(),
       require("postcss-cssnext")()
     ]
   },

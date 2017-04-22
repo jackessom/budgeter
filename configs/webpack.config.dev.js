@@ -28,7 +28,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: ['style', 'css', 'postcss-loader']
+        loaders: ['style', 'css?modules', 'postcss-loader'],
       },
       {
         test: /\.json$/,
@@ -52,7 +52,10 @@ module.exports = {
   ],
   postcss: function (webpack) {
     return [
-      require("stylelint")(),
+      require("stylelint")({
+        context: 'src'
+      }),
+      require("postcss-import")(),
       require("postcss-cssnext")()
     ]
   },

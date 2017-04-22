@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "description": "An app to track common monthly ingoings and outgoings, those special things you buy and see the state of your money in future months.",
   "main": "src/index.jsx",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/jackessom/budgeter"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackessom/budgeter"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -15,9 +15,12 @@
   "author": "Jack Essom",
   "license": "ISC",
   "dependencies": {
+    "moment": "^2.18.1",
     "normalize.css": "^5.0.0",
+    "prop-types": "^15.5.8",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "react-toolbox": "^2.0.0-beta.8"
   },
   "devDependencies": {
     "babel-core": "^6.18.0",
@@ -42,6 +45,7 @@
     "opn": "^4.0.2",
     "postcss": "^5.2.15",
     "postcss-cssnext": "^2.9.0",
+    "postcss-import": "^9.1.0",
     "postcss-loader": "^1.3.2",
     "react-hot-loader": "^1.3.1",
     "react-test-renderer": "^15.4.2",
@@ -66,6 +70,7 @@
       "no-console": 0,
       "no-undef": 0,
       "linebreak-style": 0,
+      "react/require-default-props": 0,
       "react/forbid-prop-types": 0
     },
     "globals": {
