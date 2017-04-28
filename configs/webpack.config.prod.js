@@ -3,6 +3,13 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+var reactToolboxVariables = {
+  'color-primary': 'var(--palette-blue-500)',
+  'color-primary-dark': 'var(--palette-blue-500)',
+  'color-accent': 'var(--palette-amber-800)',
+  'color-accent-dark': 'var(--palette-amber-800)'
+};
+
 module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
@@ -94,7 +101,13 @@ module.exports = {
         context: 'src'
       }),
       require("postcss-import")(),
-      require("postcss-cssnext")()
+      require("postcss-cssnext")({
+        features: {
+          customProperties: {
+            variables: reactToolboxVariables,
+          },
+        },
+      })
     ]
   },
   eslint: {
