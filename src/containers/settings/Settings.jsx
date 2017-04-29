@@ -9,10 +9,6 @@ class Settings extends Component {
 
   constructor(props) {
     super(props);
-    this.itemTemplate = {
-      label: '',
-      value: 0.00,
-    };
     this.state = {
       id: guid(),
       name: '',

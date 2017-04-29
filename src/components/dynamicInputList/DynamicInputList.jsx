@@ -17,7 +17,7 @@ class DynamicInputList extends Component {
     };
 
     this.submitItems = this.submitItems.bind(this);
-    this.handleItemEdit = this.handleItemEdit.bind(this);
+    this.editListItem = this.editListItem.bind(this);
     this.addNewListItem = this.addNewListItem.bind(this);
     this.removeListItem = this.removeListItem.bind(this);
   }
@@ -57,7 +57,7 @@ class DynamicInputList extends Component {
     this.setState({ allowNew });
   }
 
-  handleItemEdit(itemKey, item) {
+  editListItem(itemKey, item) {
     this.submitItems('edit', itemKey, item);
   }
 
@@ -78,7 +78,7 @@ class DynamicInputList extends Component {
           id={key}
           label={item.label}
           value={item.value}
-          submitItem={this.handleItemEdit}
+          submitItem={this.editListItem}
           deleteItem={this.removeListItem}
         />
       );
