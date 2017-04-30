@@ -1,34 +1,38 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Layout, Panel, Sidebar } from 'react-toolbox';
 import Settings from '../../containers/settings/Settings';
 import Header from '../../containers/header/Header';
 import { padding, background } from '../../styles/base.css';
 
-class App extends Component {
+const App = props => (
+  <Layout className={background}>
+    <Panel className={padding}>
+      <Header />
+    </Panel>
+    <Sidebar
+      className={padding}
+      pinned={props.sidebarVisibility}
+      width={5}
+    >
+      <Settings />
+    </Sidebar>
+  </Layout>
+);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      sidebarPinned: true,
-    };
-  }
+App.propTypes = {
+  sidebarVisibility: PropTypes.bool.isRequired,
+};
 
-  render() {
-    return (
-      <Layout className={background}>
-        <Panel className={padding}>
-          <Header />
-        </Panel>
-        <Sidebar
-          className={padding}
-          pinned={this.state.sidebarPinned}
-          width={5}
-        >
-          <Settings />
-        </Sidebar>
-      </Layout>
-    );
-  }
-}
+App.defaultProps = {
+  sidebarVisibility: false,
+};
 
-export default App;
+const mapStateToProps = state => ({
+  sidebarVisibility: state.sidebarVisibility,
+});
+
+export default connect(
+  mapStateToProps,
+)(App);

@@ -1,2 +1,2 @@
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
-export const ADD_TODO = 'ADD_TODO';
+export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';

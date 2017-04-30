@@ -10,7 +10,7 @@ import {
   Button,
   ListDivider,
  } from 'react-toolbox';
-import { saveSettings } from '../../actions';
+import { saveSettings, toggleSidebar } from '../../actions';
 import DynamicInputList from '../../components/dynamicInputList/DynamicInputList';
 import guid from '../../helpers/guid';
 import styles from './settings.css';
@@ -56,62 +56,70 @@ class Settings extends Component {
       incomings: this.state.incomings,
     };
     return (
-      <form>
-        <h1>Settings</h1>
-        <Tabs
-          className={styles.tabs}
-          index={this.state.tabIndex}
-          onChange={this.handleTabChange}
-        >
-          <Tab label="Basic">
-            <Input
-              type="text"
-              label="Name"
-              name="name"
-              value={this.state.name}
-              onChange={(value, event) => { this.handleChange(value, event); }}
-              maxLength={16}
-            />
-            <Input
-              type="number"
-              label="Starting amount"
-              name="startAmount"
-              value={this.state.startAmount}
-              onChange={(value, event) => { this.handleChange(value, event); }}
-            />
-            <DatePicker
-              label="Start date"
-              name="startDate"
-              minDate={new Date()}
-              onChange={(value, event) => { this.handleChange(value, event); }}
-              value={this.state.startDate}
-              inputFormat={value => moment(value).format('MMMM Do YYYY')}
-            />
-          </Tab>
-          <Tab label="Outgoings">
-            <DynamicInputList
-              name="outgoings"
-              items={this.state.outgoings}
-              handleListChange={this.handleDynamicListChange}
-            />
-          </Tab>
-          <Tab label="Incomings">
-            <DynamicInputList
-              name="incomings"
-              items={this.state.incomings}
-              handleListChange={this.handleDynamicListChange}
-            />
-          </Tab>
-        </Tabs>
-        <ListDivider />
+      <div>
         <Button
-          icon="save"
-          label="Save settings"
-          primary
-          onMouseUp={() => { this.props.saveSettings(settings); }}
-          className={styles.button}
+          icon="close"
+          label="Close"
+          onMouseUp={() => { this.props.closeSidebar(); }}
+          style={{ float: 'right' }}
         />
-      </form>
+        <form>
+          <h1>Settings</h1>
+          <Tabs
+            className={styles.tabs}
+            index={this.state.tabIndex}
+            onChange={this.handleTabChange}
+          >
+            <Tab label="Basic">
+              <Input
+                type="text"
+                label="Name"
+                name="name"
+                value={this.state.name}
+                onChange={(value, event) => { this.handleChange(value, event); }}
+                maxLength={16}
+              />
+              <Input
+                type="number"
+                label="Starting amount"
+                name="startAmount"
+                value={this.state.startAmount}
+                onChange={(value, event) => { this.handleChange(value, event); }}
+              />
+              <DatePicker
+                label="Start date"
+                name="startDate"
+                minDate={new Date()}
+                onChange={(value, event) => { this.handleChange(value, event); }}
+                value={this.state.startDate}
+                inputFormat={value => moment(value).format('MMMM Do YYYY')}
+              />
+            </Tab>
+            <Tab label="Outgoings">
+              <DynamicInputList
+                name="outgoings"
+                items={this.state.outgoings}
+                handleListChange={this.handleDynamicListChange}
+              />
+            </Tab>
+            <Tab label="Incomings">
+              <DynamicInputList
+                name="incomings"
+                items={this.state.incomings}
+                handleListChange={this.handleDynamicListChange}
+              />
+            </Tab>
+          </Tabs>
+          <ListDivider />
+          <Button
+            icon="save"
+            label="Save settings"
+            primary
+            onMouseUp={() => { this.props.saveSettings(settings); }}
+            className={styles.button}
+          />
+        </form>
+      </div>
     );
   }
 }
@@ -124,6 +132,7 @@ Settings.propTypes = {
   outgoings: PropTypes.object.isRequired,
   incomings: PropTypes.object.isRequired,
   saveSettings: PropTypes.func.isRequired,
+  closeSidebar: PropTypes.func.isRequired,
 };
 
 Settings.defaultProps = {
@@ -145,6 +154,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  closeSidebar: () => {
+    dispatch(toggleSidebar(false));
+  },
   saveSettings: (settings) => {
     dispatch(saveSettings(settings));
   },

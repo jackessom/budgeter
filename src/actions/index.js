@@ -1,11 +1,11 @@
-import { SAVE_SETTINGS } from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 
 export const saveSettings = settings => ({
-  type: SAVE_SETTINGS,
+  type: types.SAVE_SETTINGS,
   settings,
 });
 
-export const savanothereSettings = settings => ({
-  type: SAVE_SETTINGS,
-  settings,
+export const toggleSidebar = sidebarVisible => ({
+  type: types.TOGGLE_SIDEBAR,
+  sidebarVisible,
 });
