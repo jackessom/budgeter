@@ -15,11 +15,10 @@ const Header = props => (
       <IconButton icon="chevron_left" className={styles.navLeft} />
       <IconButton icon="chevron_right" className={styles.navRight} />
     </CardTitle>
-    <CardActions>
+    <CardActions className={styles.actions} >
       <IconButton
         icon="settings"
         onMouseUp={() => { props.openSidebar(); }}
-        style={{ float: 'right' }}
       />
     </CardActions>
   </Card>

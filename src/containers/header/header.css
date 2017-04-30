@@ -26,3 +26,7 @@
 .navRight {
   right: -7px;
 }
+
+.actions {
+  justify-content: flex-end;
+}
