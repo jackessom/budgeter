@@ -1,5 +1,12 @@
+@import '../../node_modules/react-toolbox/lib/colors.css';
+@import '../../node_modules/react-toolbox/lib/variables.css';
+
 .padding {
   padding: 1rem;
+}
+
+.background {
+  background-color: var(--color-primary);
 }
 
 .visiblyHide {

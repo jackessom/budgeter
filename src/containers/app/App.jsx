@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Panel, Sidebar } from 'react-toolbox';
 import Settings from '../../containers/settings/Settings';
 import Header from '../../containers/header/Header';
-import { padding } from '../../styles/base.css';
+import { padding, background } from '../../styles/base.css';
 
 class App extends Component {
 
@@ -15,7 +15,7 @@ class App extends Component {
 
   render() {
     return (
-      <Layout>
+      <Layout className={background}>
         <Panel className={padding}>
           <Header />
         </Panel>
