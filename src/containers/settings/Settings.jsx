@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import moment from 'moment';
-import { Input, DatePicker, Tab, Tabs } from 'react-toolbox';
+import {
+  Input,
+  DatePicker,
+  Tab,
+  Tabs,
+  Button,
+  ListDivider,
+ } from 'react-toolbox';
+import { saveSettings } from '../../actions';
 import DynamicInputList from '../../components/dynamicInputList/DynamicInputList';
 import guid from '../../helpers/guid';
 import styles from './settings.css';
@@ -10,12 +20,12 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: guid(),
-      name: '',
-      startDate: new Date(),
-      startAmount: 0.00,
-      outgoings: {},
-      incomings: {},
+      id: this.props.id,
+      name: this.props.name,
+      startDate: this.props.startDate,
+      startAmount: this.props.startAmount,
+      outgoings: this.props.outgoings,
+      incomings: this.props.incomings,
       tabIndex: 1,
     };
 
@@ -37,6 +47,14 @@ class Settings extends Component {
   }
 
   render() {
+    const settings = {
+      id: this.state.id,
+      name: this.state.name,
+      startDate: this.state.startDate,
+      startAmount: parseFloat(this.state.startAmount),
+      outgoings: this.state.outgoings,
+      incomings: this.state.incomings,
+    };
     return (
       <form>
         <h1>Settings</h1>
@@ -85,9 +103,54 @@ class Settings extends Component {
             />
           </Tab>
         </Tabs>
+        <ListDivider />
+        <Button
+          icon="save"
+          label="Save settings"
+          primary
+          onMouseUp={() => { this.props.saveSettings(settings); }}
+          className={styles.button}
+        />
       </form>
     );
   }
 }
 
-export default Settings;
+Settings.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  startAmount: PropTypes.number.isRequired,
+  outgoings: PropTypes.object.isRequired,
+  incomings: PropTypes.object.isRequired,
+  saveSettings: PropTypes.func.isRequired,
+};
+
+Settings.defaultProps = {
+  id: guid(),
+  name: '',
+  startDate: new Date(),
+  startAmount: 0.00,
+  outgoings: {},
+  incomings: {},
+};
+
+const mapStateToProps = state => ({
+  id: state.settings.id,
+  name: state.settings.name,
+  startDate: state.settings.startDate,
+  startAmount: state.settings.startAmount,
+  outgoings: state.settings.outgoings,
+  incomings: state.settings.incomings,
+});
+
+const mapDispatchToProps = dispatch => ({
+  saveSettings: (settings) => {
+    dispatch(saveSettings(settings));
+  },
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Settings);

@@ -19,7 +19,11 @@ class App extends Component {
         <Panel className={padding}>
           <Header />
         </Panel>
-        <Sidebar className={padding} pinned={this.state.sidebarPinned} width={5}>
+        <Sidebar
+          className={padding}
+          pinned={this.state.sidebarPinned}
+          width={5}
+        >
           <Settings />
         </Sidebar>
       </Layout>

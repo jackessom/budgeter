@@ -88,8 +88,9 @@ class DynamicInputList extends Component {
         {items}
         <Button
           icon="add"
-          label="Add new"
-          primary
+          floating
+          accent
+          mini
           onMouseUp={() => { this.addNewListItem(); }}
           style={{ float: 'right' }}
           disabled={!this.state.allowNew}

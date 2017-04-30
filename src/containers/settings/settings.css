@@ -4,3 +4,8 @@
 :root {
   --padding: calc(1.6 * var(--unit));
 }
+
+.button {
+  margin-top: var(--padding);
+  float: right;
+}
