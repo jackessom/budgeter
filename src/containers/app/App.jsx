@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Layout, Panel, Sidebar } from 'react-toolbox';
 import Settings from '../../containers/settings/Settings';
-import Header from '../../containers/header/Header';
+import Month from '../../containers/month/Month';
 import { padding, background } from '../../styles/base.css';
 
 const App = props => (
   <Layout className={background}>
     <Panel className={padding}>
-      <Header />
+      <Month />
     </Panel>
     <Sidebar
       className={padding}
