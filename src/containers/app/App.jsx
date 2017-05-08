@@ -1,28 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Layout, Panel, Sidebar } from 'react-toolbox';
+import { Layout, Panel, Sidebar, AppBar } from 'react-toolbox';
 import Settings from '../../containers/settings/Settings';
 import Month from '../../containers/month/Month';
-import { padding, background } from '../../styles/base.css';
+import { toggleSidebar } from '../../actions';
+import { padding } from '../../styles/base.css';
 
 const App = props => (
-  <Layout className={background}>
-    <Panel className={padding}>
-      <Month />
-    </Panel>
-    <Sidebar
-      className={padding}
-      pinned={props.sidebarVisibility}
-      width={5}
-    >
-      <Settings />
-    </Sidebar>
-  </Layout>
+  <div>
+    <AppBar
+      title="Budgeter"
+      rightIcon="settings"
+      onRightIconClick={() => { props.openSidebar(); }}
+    />
+    <Layout>
+      <Panel className={padding}>
+        <Month />
+      </Panel>
+      <Sidebar
+        pinned={props.sidebarVisibility}
+        width={5}
+      >
+        <Settings />
+      </Sidebar>
+    </Layout>
+  </div>
 );
 
 App.propTypes = {
   sidebarVisibility: PropTypes.bool.isRequired,
+  openSidebar: PropTypes.func,
 };
 
 App.defaultProps = {
@@ -33,6 +41,13 @@ const mapStateToProps = state => ({
   sidebarVisibility: state.sidebarVisibility,
 });
 
+const mapDispatchToProps = dispatch => ({
+  openSidebar: () => {
+    dispatch(toggleSidebar(true));
+  },
+});
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(App);

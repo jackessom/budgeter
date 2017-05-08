@@ -1,100 +1,128 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'react-toolbox';
-import DynamicInputListItem from '../../components/dynamicInputListItem/DynamicInputListItem';
+import { List, ListSubHeader, ListItem, ListDivider, Dialog, Input } from 'react-toolbox';
 import guid from '../../helpers/guid';
+import capitaliseFirstLetter from '../../helpers/capitaliseFirstLetter';
+import styles from './dynamicInputList.css';
 
 class DynamicInputList extends Component {
 
   constructor(props) {
     super(props);
-    this.itemTemplate = {
-      label: '',
-      value: 0.00,
-    };
     this.state = {
-      allowNew: true,
+      dialogLabel: '',
+      dialogValue: 0,
+      dialogIsActive: false,
     };
-
-    this.submitItems = this.submitItems.bind(this);
-    this.editListItem = this.editListItem.bind(this);
+    this.openDialog = this.openDialog.bind(this);
+    this.closeDialog = this.closeDialog.bind(this);
     this.addNewListItem = this.addNewListItem.bind(this);
-    this.removeListItem = this.removeListItem.bind(this);
+    this.saveListItem = this.saveListItem.bind(this);
+    this.deleteListItem = this.deleteListItem.bind(this);
+    this.dialogActions = [
+      { label: 'Delete', onClick: this.deleteListItem },
+      { label: 'Save', onClick: this.saveListItem },
+      { label: 'Cancel', onClick: this.closeDialog },
+    ];
   }
 
-  submitItems(changeType, itemKey, item) {
-    const newItemList = this.props.items;
-    switch (changeType) {
-      case 'new':
-        newItemList[guid()] = this.itemTemplate;
-        break;
-      case 'edit':
-      case 'remove':
-        Object.keys(this.props.items).forEach((key) => {
-          if (key === itemKey) {
-            if (changeType === 'edit') {
-              newItemList[itemKey] = item[itemKey];
-            } else if (changeType === 'remove') {
-              delete newItemList[itemKey];
-            }
-          }
-        });
-        break;
-      default:
-        return;
+  openDialog(itemId) {
+    if (this.props.items[itemId]) {
+      this.setState({
+        dialogIsActive: true,
+        dialogLabel: this.props.items[itemId].label,
+        dialogValue: this.props.items[itemId].value,
+        dialogId: itemId,
+      });
+    } else {
+      this.setState({
+        dialogIsActive: true,
+        dialogLabel: '',
+        dialogValue: 0,
+        dialogId: itemId,
+      });
     }
-    this.allowNewItemsValidator();
-    this.props.handleListChange(this.props.name, newItemList);
   }
 
-  allowNewItemsValidator() {
-    let allowNew = true;
-    Object.keys(this.props.items).forEach((key) => {
-      if (this.props.items[key].label.length < 1) {
-        allowNew = false;
-      }
+  closeDialog() {
+    this.setState({ dialogIsActive: false });
+  }
+
+  saveListItem() {
+    const newItemList = Object.assign({}, this.props.items, {
+      [this.state.dialogId]: {
+        label: this.state.dialogLabel,
+        value: this.state.dialogValue,
+      },
     });
-    this.setState({ allowNew });
+    this.props.handleListChange(this.props.name, newItemList);
+    this.closeDialog();
   }
 
-  editListItem(itemKey, item) {
-    this.submitItems('edit', itemKey, item);
+  deleteListItem() {
+    const newItemList = Object.assign({}, this.props.items);
+    delete newItemList[this.state.dialogId];
+    this.props.handleListChange(this.props.name, newItemList);
+    this.closeDialog();
   }
 
   addNewListItem() {
-    this.submitItems('new');
+    this.openDialog(guid());
   }
 
-  removeListItem(itemKey) {
-    this.submitItems('remove', itemKey);
+  handleInputChange(value, event) {
+    this.setState({ [event.target.name]: value });
   }
 
   render() {
     const items = Object.keys(this.props.items).map((key) => {
       const item = this.props.items[key];
       return (
-        <DynamicInputListItem
+        <ListItem
           key={key}
-          id={key}
-          label={item.label}
-          value={item.value}
-          submitItem={this.editListItem}
-          deleteItem={this.removeListItem}
+          caption={item.value.toString()}
+          legend={item.label}
+          rightIcon="mode_edit"
+          onClick={() => { this.openDialog(key); }}
+          selectable
         />
       );
     });
     return (
       <div>
-        {items}
-        <Button
-          icon="add"
-          floating
-          accent
-          mini
-          onMouseUp={() => { this.addNewListItem(); }}
-          style={{ float: 'right' }}
-          disabled={!this.state.allowNew}
-        />
+        <List selectable>
+          <ListSubHeader caption={capitaliseFirstLetter(this.props.name)} />
+          {items}
+          <ListDivider />
+          <ListItem
+            caption="Add an item"
+            leftIcon="add"
+            onClick={() => { this.addNewListItem(); }}
+          />
+        </List>
+        <Dialog
+          active={this.state.dialogIsActive}
+          actions={this.dialogActions}
+          theme={styles}
+          onOverlayClick={() => { this.closeDialog(); }}
+        >
+          <Input
+            type="text"
+            label="Label"
+            name="dialogLabel"
+            value={this.state.dialogLabel}
+            required
+            error={this.state.error ? errorText : false}
+            onChange={(value, event) => { this.handleInputChange(value, event); }}
+          />
+          <Input
+            type="number"
+            label="Amount"
+            name="dialogValue"
+            value={this.state.dialogValue}
+            onChange={(value, event) => { this.handleInputChange(value, event); }}
+          />
+        </Dialog>
       </div>
     );
   }

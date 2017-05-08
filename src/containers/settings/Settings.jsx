@@ -2,18 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import {
-  Input,
-  DatePicker,
-  Tab,
-  Tabs,
-  Button,
-  ListDivider,
- } from 'react-toolbox';
+import { Input, DatePicker, ListSubHeader, AppBar } from 'react-toolbox';
 import { saveSettings, toggleSidebar } from '../../actions';
 import DynamicInputList from '../../components/dynamicInputList/DynamicInputList';
 import guid from '../../helpers/guid';
 import styles from './settings.css';
+import { padding } from '../../styles/base.css';
 
 class Settings extends Component {
 
@@ -24,99 +18,99 @@ class Settings extends Component {
       name: this.props.name,
       startDate: this.props.startDate,
       startAmount: this.props.startAmount,
-      outgoings: this.props.outgoings,
-      incomings: this.props.incomings,
-      tabIndex: 1,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
     this.handleDynamicListChange = this.handleDynamicListChange.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
   }
 
   handleChange(value, event) {
     this.setState({ [event.target.name]: value });
   }
 
-  handleDynamicListChange(listName, items) {
-    this.setState({ [listName]: items });
+  handleDatepickerChange(value, event) {
+    const newSettings = Object.assign({}, this.createSettingsObject(), {
+      [event.target.name]: value,
+    });
+    this.props.saveSettings(newSettings);
   }
 
-  handleTabChange(tabIndex) {
-    this.setState({ tabIndex });
+  handleBasicSettings() {
+    const newSettings = Object.assign({}, this.createSettingsObject(), {
+      name: this.state.name,
+      startAmount: parseFloat(this.state.startAmount),
+    });
+    this.props.saveSettings(newSettings);
+  }
+
+  handleDynamicListChange(listName, items) {
+    const newSettings = Object.assign({}, this.createSettingsObject(), {
+      [listName]: items,
+    });
+    this.props.saveSettings(newSettings);
+  }
+
+  createSettingsObject() {
+    return {
+      id: this.props.id,
+      name: this.props.name,
+      startDate: this.props.startDate,
+      startAmount: this.props.startAmount,
+      outgoings: this.props.outgoings,
+      incomings: this.props.incomings,
+    };
   }
 
   render() {
-    const settings = {
-      id: this.state.id,
-      name: this.state.name,
-      startDate: this.state.startDate,
-      startAmount: parseFloat(this.state.startAmount),
-      outgoings: this.state.outgoings,
-      incomings: this.state.incomings,
-    };
     return (
       <div>
-        <Button
-          icon="close"
-          label="Close"
-          onMouseUp={() => { this.props.closeSidebar(); }}
-          style={{ float: 'right' }}
+        <AppBar
+          title="Settings"
+          rightIcon="close"
+          onRightIconClick={() => { this.props.closeSidebar(); }}
         />
-        <form>
-          <h1>Settings</h1>
-          <Tabs
-            className={styles.tabs}
-            index={this.state.tabIndex}
-            onChange={this.handleTabChange}
-          >
-            <Tab label="Basic">
-              <Input
-                type="text"
-                label="Name"
-                name="name"
-                value={this.state.name}
-                onChange={(value, event) => { this.handleChange(value, event); }}
-                maxLength={16}
-              />
-              <Input
-                type="number"
-                label="Starting amount"
-                name="startAmount"
-                value={this.state.startAmount}
-                onChange={(value, event) => { this.handleChange(value, event); }}
-              />
-              <DatePicker
-                label="Start date"
-                name="startDate"
-                minDate={new Date()}
-                onChange={(value, event) => { this.handleChange(value, event); }}
-                value={this.state.startDate}
-                inputFormat={value => moment(value).format('MMMM Do YYYY')}
-              />
-            </Tab>
-            <Tab label="Outgoings">
-              <DynamicInputList
-                name="outgoings"
-                items={this.state.outgoings}
-                handleListChange={this.handleDynamicListChange}
-              />
-            </Tab>
-            <Tab label="Incomings">
-              <DynamicInputList
-                name="incomings"
-                items={this.state.incomings}
-                handleListChange={this.handleDynamicListChange}
-              />
-            </Tab>
-          </Tabs>
-          <ListDivider />
-          <Button
-            icon="save"
-            label="Save settings"
-            primary
-            onMouseUp={() => { this.props.saveSettings(settings); }}
-            className={styles.button}
+        <form className={padding}>
+          <ListSubHeader caption="Basic" />
+          <div>
+            <Input
+              type="text"
+              label="Name"
+              name="name"
+              value={this.state.name}
+              onChange={(value, event) => { this.handleChange(value, event); }}
+              onBlur={() => { this.handleBasicSettings(); }}
+              maxLength={16}
+              theme={styles}
+            />
+            <Input
+              type="number"
+              label="Starting amount"
+              name="startAmount"
+              value={this.state.startAmount}
+              onChange={(value, event) => { this.handleChange(value, event); }}
+              onBlur={() => { this.handleBasicSettings(); }}
+              theme={styles}
+            />
+            <DatePicker
+              label="Start date"
+              name="startDate"
+              minDate={moment.utc().subtract(1, 'day').toDate()}
+              onChange={(value, event) => { this.handleDatepickerChange(value, event); }}
+              value={this.props.startDate}
+              inputFormat={value => moment(value).format('MMMM Do YYYY')}
+              theme={styles}
+            />
+          </div>
+          <DynamicInputList
+            name="outgoings"
+            items={this.props.outgoings}
+            handleListChange={this.handleDynamicListChange}
+          />
+          <DynamicInputList
+            name="incomings"
+            items={this.props.incomings}
+            handleListChange={this.handleDynamicListChange}
           />
         </form>
       </div>

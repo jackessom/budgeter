@@ -5,6 +5,10 @@
   padding: 1rem;
 }
 
+.noMargin {
+  margin: 0;
+}
+
 .background {
   background-color: var(--color-primary);
 }

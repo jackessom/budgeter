@@ -9,3 +9,8 @@
   margin-top: var(--padding);
   float: right;
 }
+
+.inputElement,
+.label {
+  padding-left: var(--padding);
+}

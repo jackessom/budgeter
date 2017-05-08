@@ -13,12 +13,35 @@ const initialState = {
   currentDate: '2017-05-01T00:00:00.000Z',
   dates: {
     '2017-05-01T00:00:00.000Z': {
-      monthTotal: 0,
-      items: [],
+      monthTotal: -410,
+      items: {
+        1: {
+          title: 'Holiday',
+          value: 400,
+          type: 'outgoing',
+        },
+        2: {
+          title: 'Cinema',
+          value: 10,
+          type: 'outgoing',
+        },
+
+        3: {
+          title: 'Birthday',
+          value: 50,
+          type: 'incoming',
+        },
+      },
     },
     '2017-04-01T00:00:00.000Z': {
       monthTotal: 0,
-      items: [],
+      items: {
+        2: {
+          title: 'Cinema',
+          value: 10,
+          type: 'outgoing',
+        },
+      },
     },
   },
   settings: {
@@ -26,7 +49,12 @@ const initialState = {
     name: 'Jack',
     startDate: new Date(),
     startAmount: 0,
-    outgoings: {},
+    outgoings: {
+      cfsuab8oron: {
+        label: 'rent',
+        value: 430,
+      },
+    },
     incomings: {},
   },
 };

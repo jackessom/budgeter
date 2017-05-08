@@ -1,0 +1,15 @@
+@import '../../../node_modules/react-toolbox/lib/colors.css';
+
+.button {
+  &:first-child,
+  &:first-child:not([disabled]) {
+    float: left;
+    margin-left: 0;
+    background-color: var(--palette-red-900);
+    color: var(--color-dark-contrast);
+
+    &:hover {
+      background-color: var(--palette-red-700);
+    }
+  }
+}

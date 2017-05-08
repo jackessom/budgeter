@@ -1,40 +1,35 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Card, CardTitle, CardActions, IconButton } from 'react-toolbox';
+import { Card, CardTitle, IconButton } from 'react-toolbox';
 import { getYearString, getMonthString } from '../../helpers/dates';
-import { toggleSidebar, goToNextMonth, goToPreviousMonth } from '../../actions';
+import { goToNextMonth, goToPreviousMonth } from '../../actions';
 import styles from './header.css';
+import baseStyles from '../../styles/base.css';
 
 const Header = props => (
   <Card style={{ width: '100%' }}>
-    <CardTitle
-      title={getMonthString(props.date)}
-      subtitle={getYearString(props.date)}
-      className={styles.title}
-    >
-      <IconButton
-        icon="chevron_left"
-        className={styles.navLeft}
-        onMouseUp={() => { props.goToPreviousMonth(props.date); }}
-      />
-      <IconButton
-        icon="chevron_right"
-        className={styles.navRight}
-        onMouseUp={() => { props.goToNextMonth(props.date); }}
-      />
+    <CardTitle theme={styles}>
+      <div className={styles.monthDisplay}>
+        <IconButton
+          className={styles.buttons}
+          icon="chevron_left"
+          onMouseUp={() => { props.goToPreviousMonth(props.date); }}
+        />
+        <h2 className={`${baseStyles.noMargin} ${styles.title}`}>
+          {getMonthString(props.date)} <span>{getYearString(props.date)}</span>
+        </h2>
+        <IconButton
+          className={styles.buttons}
+          icon="chevron_right"
+          onMouseUp={() => { props.goToNextMonth(props.date); }}
+        />
+      </div>
     </CardTitle>
-    <CardActions className={styles.actions} >
-      <IconButton
-        icon="settings"
-        onMouseUp={() => { props.openSidebar(); }}
-      />
-    </CardActions>
   </Card>
 );
 
 Header.propTypes = {
-  openSidebar: PropTypes.func,
   goToNextMonth: PropTypes.func,
   goToPreviousMonth: PropTypes.func,
   date: PropTypes.string.isRequired,
@@ -45,9 +40,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  openSidebar: () => {
-    dispatch(toggleSidebar(true));
-  },
   goToNextMonth: (date) => {
     dispatch(goToNextMonth(date));
   },

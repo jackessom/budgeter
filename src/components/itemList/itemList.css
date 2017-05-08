@@ -1,0 +1,30 @@
+@import '../../../node_modules/react-toolbox/lib/variables.css';
+@import '../../../node_modules/react-toolbox/lib/colors.css';
+
+:root {
+  --padding: calc(1.6 * var(--unit));
+  --color-text-secondary: var(--palette-grey-600);
+}
+
+.chip {
+  padding: 0 var(--padding);
+}
+
+.chipIncoming {
+  padding: 0 var(--padding);
+  background-color: var(--palette-green-900);
+  color: var(--color-dark-contrast);
+  font-size: 1.5rem;
+}
+
+.chipOutgoing {
+  padding: 0 var(--padding);
+  background-color: var(--palette-red-900);
+  color: var(--color-dark-contrast);
+  font-size: 1.5rem;
+}
+
+.noticeMessage {
+  padding: var(--padding);
+  color: var(--color-text-secondary);
+}

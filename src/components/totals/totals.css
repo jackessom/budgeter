@@ -1,0 +1,27 @@
+@import '../../../node_modules/react-toolbox/lib/colors.css';
+
+.table {
+  margin-top: 10px;
+}
+
+.row {
+  &:hover {
+    background-color: inherit;
+  }
+}
+
+.rowCell,
+.headCell {
+  text-align: center;
+  &.numeric { text-align: center; }
+}
+
+.negativeBg {
+  font-weight: bold;
+  color: var(--palette-red-900);
+}
+
+.positiveBg {
+  font-weight: bold;
+  color: var(--palette-green-900);
+}
