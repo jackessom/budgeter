@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Input, DatePicker, ListSubHeader, AppBar } from 'react-toolbox';
 import { saveSettings, toggleSidebar } from '../../actions';
-import DynamicInputList from '../../components/dynamicInputList/DynamicInputList';
+import DynamicList from '../../components/dynamicList/DynamicList';
 import guid from '../../helpers/guid';
 import styles from './settings.css';
 import { padding } from '../../styles/base.css';
@@ -44,7 +44,7 @@ class Settings extends Component {
     this.props.saveSettings(newSettings);
   }
 
-  handleDynamicListChange(listName, items) {
+  handleDynamicListChange(items, listName) {
     const newSettings = Object.assign({}, this.createSettingsObject(), {
       [listName]: items,
     });
@@ -63,6 +63,36 @@ class Settings extends Component {
   }
 
   render() {
+    const listDefinitions = [
+      { id: guid(), title: 'outgoings', header: 'Common outgoings', items: this.props.outgoings },
+      { id: guid(), title: 'incomings', header: 'Common Incomings', items: this.props.incomings },
+    ];
+    const defaultListValues = {
+      label: '',
+      value: '',
+    };
+    const lists = listDefinitions.map(list => (
+      <DynamicList
+        key={list.id}
+        name={list.title}
+        header={list.header}
+        items={list.items}
+        defaultValues={defaultListValues}
+        handleListChange={this.handleDynamicListChange}
+      >
+        <Input
+          type="text"
+          label="Label"
+          name="label"
+          required
+        />
+        <Input
+          type="number"
+          label="Amount"
+          name="value"
+        />
+      </DynamicList>
+    ));
     return (
       <div>
         <AppBar
@@ -102,16 +132,7 @@ class Settings extends Component {
               theme={styles}
             />
           </div>
-          <DynamicInputList
-            name="outgoings"
-            items={this.props.outgoings}
-            handleListChange={this.handleDynamicListChange}
-          />
-          <DynamicInputList
-            name="incomings"
-            items={this.props.incomings}
-            handleListChange={this.handleDynamicListChange}
-          />
+          {lists}
         </form>
       </div>
     );

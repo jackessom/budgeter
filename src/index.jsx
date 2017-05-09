@@ -16,18 +16,18 @@ const initialState = {
       monthTotal: -410,
       items: {
         1: {
-          title: 'Holiday',
+          label: 'Holiday',
           value: 400,
           type: 'outgoing',
         },
         2: {
-          title: 'Cinema',
+          label: 'Cinema',
           value: 10,
           type: 'outgoing',
         },
 
         3: {
-          title: 'Birthday',
+          label: 'Birthday',
           value: 50,
           type: 'incoming',
         },
@@ -37,7 +37,7 @@ const initialState = {
       monthTotal: 0,
       items: {
         2: {
-          title: 'Cinema',
+          label: 'Cinema',
           value: 10,
           type: 'outgoing',
         },

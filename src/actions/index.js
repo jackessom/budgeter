@@ -20,3 +20,14 @@ export const goToPreviousMonth = date => ({
   type: types.GO_TO_PREVIOUS_MONTH,
   newDate: getPreviousMonth(date),
 });
+
+export const saveMonth = (date, dateObject) => ({
+  type: types.SAVE_MONTH,
+  date,
+  dateObject,
+});
+
+export const removeMonth = date => ({
+  type: types.REMOVE_MONTH,
+  date,
+});

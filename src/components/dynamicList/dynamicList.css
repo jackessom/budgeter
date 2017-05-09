@@ -28,3 +28,20 @@
   padding: var(--padding);
   color: var(--color-text-secondary);
 }
+
+.radioGroup {
+  margin-top: calc(var(--padding) / 2);
+}
+
+.deleteButton,
+.deleteButton:first-child,
+.deleteButton:first-child:not([disabled]) {
+  float: left;
+  margin-left: 0;
+  background-color: var(--palette-red-900);
+  color: var(--color-dark-contrast);
+
+  &:hover {
+    background-color: var(--palette-red-700);
+  }
+}
