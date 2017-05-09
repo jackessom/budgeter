@@ -21,6 +21,12 @@
   flex: 0 0 36px;
 }
 
+.disabledButton {
+  flex: 0 0 36px;
+  opacity: 0.1;
+  cursor: not-allowed;
+}
+
 .cardTitle:last-child {
   padding-bottom: var(--halfPadding);
   padding-top: var(--halfPadding);

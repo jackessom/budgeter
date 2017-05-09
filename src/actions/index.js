@@ -6,10 +6,21 @@ export const toggleSidebar = sidebarVisible => ({
   sidebarVisible,
 });
 
-export const saveSettings = settings => ({
-  type: types.SAVE_SETTINGS,
-  settings,
-});
+export const saveSettings = (settings) => {
+  const commonOutgoingTotal = Object.keys(settings.outgoings).reduce((prevTotal, key) => (
+    prevTotal + settings.outgoings[key].value
+  ), 0);
+  const commonIncomingTotal = Object.keys(settings.incomings).reduce((prevTotal, key) => (
+    prevTotal + settings.incomings[key].value
+  ), 0);
+  const newSettings = Object.assign({}, settings, {
+    commonTotal: commonIncomingTotal - commonOutgoingTotal,
+  });
+  return {
+    type: types.SAVE_SETTINGS,
+    settings: newSettings,
+  };
+};
 
 export const goToNextMonth = date => ({
   type: types.GO_TO_NEXT_MONTH,
@@ -21,11 +32,24 @@ export const goToPreviousMonth = date => ({
   newDate: getPreviousMonth(date),
 });
 
-export const saveMonth = (date, dateObject) => ({
-  type: types.SAVE_MONTH,
-  date,
-  dateObject,
-});
+export const saveMonth = (date, dateObject) => {
+  const monthTotal = Object.keys(dateObject.items).reduce((prevTotal, key) => {
+    if (dateObject.items[key].type === 'incoming') {
+      return prevTotal + dateObject.items[key].value;
+    } else if (dateObject.items[key].type === 'outgoing') {
+      return prevTotal - dateObject.items[key].value;
+    }
+    return prevTotal;
+  }, 0);
+  const newDateObject = Object.assign({}, dateObject, {
+    monthTotal,
+  });
+  return {
+    type: types.SAVE_MONTH,
+    date,
+    dateObject: newDateObject,
+  };
+};
 
 export const removeMonth = date => ({
   type: types.REMOVE_MONTH,

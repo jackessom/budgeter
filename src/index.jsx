@@ -9,11 +9,11 @@ import App from './containers/app/App';
 import guid from './helpers/guid';
 
 const initialState = {
-  sidebarVisibility: true,
+  sidebarVisibility: false,
   currentDate: '2017-05-01T00:00:00.000Z',
   dates: {
     '2017-05-01T00:00:00.000Z': {
-      monthTotal: -410,
+      monthTotal: -360,
       items: {
         1: {
           label: 'Holiday',
@@ -34,7 +34,7 @@ const initialState = {
       },
     },
     '2017-04-01T00:00:00.000Z': {
-      monthTotal: 0,
+      monthTotal: -10,
       items: {
         2: {
           label: 'Cinema',
@@ -46,8 +46,7 @@ const initialState = {
   },
   settings: {
     id: guid(),
-    name: 'Jack',
-    startDate: new Date(),
+    startDate: '2017-04-01T00:00:00.000Z',
     startAmount: 0,
     outgoings: {
       cfsuab8oron: {

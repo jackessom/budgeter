@@ -1,42 +1,66 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, CardTitle, IconButton } from 'react-toolbox';
-import { getYearString, getMonthString } from '../../helpers/dates';
+import { getYearString, getMonthString, getPreviousMonth, isBefore } from '../../helpers/dates';
 import { goToNextMonth, goToPreviousMonth } from '../../actions';
 import styles from './header.css';
 import baseStyles from '../../styles/base.css';
 
-const Header = props => (
-  <Card style={{ width: '100%' }}>
-    <CardTitle theme={styles}>
-      <div className={styles.monthDisplay}>
-        <IconButton
-          className={styles.buttons}
-          icon="chevron_left"
-          onMouseUp={() => { props.goToPreviousMonth(props.date); }}
-        />
-        <h2 className={`${baseStyles.noMargin} ${styles.title}`}>
-          {getMonthString(props.date)} <span>{getYearString(props.date)}</span>
-        </h2>
-        <IconButton
-          className={styles.buttons}
-          icon="chevron_right"
-          onMouseUp={() => { props.goToNextMonth(props.date); }}
-        />
-      </div>
-    </CardTitle>
-  </Card>
-);
+class Header extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      allowPrevious: !isBefore(getPreviousMonth(this.props.date), this.props.startDate),
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      allowPrevious: !isBefore(getPreviousMonth(nextProps.date), this.props.startDate),
+    });
+  }
+
+  render() {
+    return (
+      <Card>
+        <CardTitle theme={styles}>
+          <div className={styles.monthDisplay}>
+            <IconButton
+              className={this.state.allowPrevious ? styles.buttons : styles.disabledButton}
+              icon="chevron_left"
+              onMouseUp={() => {
+                if (this.state.allowPrevious) {
+                  this.props.goToPreviousMonth(this.props.date);
+                }
+              }}
+            />
+            <h2 className={`${baseStyles.noMargin} ${styles.title}`}>
+              {getMonthString(this.props.date)} <span>{getYearString(this.props.date)}</span>
+            </h2>
+            <IconButton
+              className={styles.buttons}
+              icon="chevron_right"
+              onMouseUp={() => { this.props.goToNextMonth(this.props.date); }}
+            />
+          </div>
+        </CardTitle>
+      </Card>
+    );
+  }
+}
 
 Header.propTypes = {
   goToNextMonth: PropTypes.func,
   goToPreviousMonth: PropTypes.func,
   date: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   date: state.currentDate,
+  startDate: state.settings.startDate,
 });
 
 const mapDispatchToProps = dispatch => ({

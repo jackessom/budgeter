@@ -40,3 +40,20 @@ export function getYearString(ISODate) {
 export function getMonthString(ISODate) {
   return moment.utc(ISODate).format('MMMM');
 }
+
+export function isBefore(dateToCheck, baseDate) {
+  if (moment(dateToCheck).diff(baseDate) < 0) {
+    return true;
+  }
+  return false;
+}
+
+export function countMonths(startDate, endDate) {
+  const startDateObject = new Date(startDate);
+  const endDateObject = new Date(endDate);
+  let months;
+  months = (endDateObject.getFullYear() - startDateObject.getFullYear()) * 12;
+  months -= startDateObject.getMonth() + 1;
+  months += endDateObject.getMonth() + 1;
+  return months <= 0 ? 0 : months;
+}

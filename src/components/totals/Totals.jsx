@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox';
+import { isBefore, countMonths } from '../../helpers/dates';
 import styles from './totals.css';
 
 const bgColorSelect = (amount) => {
@@ -13,46 +14,79 @@ const bgColorSelect = (amount) => {
   return null;
 };
 
-const Totals = props => (
-  <Table selectable={false} theme={styles}>
-    <TableHead>
-      <TableCell theme={styles}>Month total</TableCell>
-      <TableCell theme={styles}>Total to date (inc. this month)</TableCell>
-    </TableHead>
-    <TableRow theme={styles}>
-      <TableCell
-        numeric
-        theme={styles}
-        className={bgColorSelect(props.monthTotal)}
-      >{
-        props.monthTotal}
-      </TableCell>
-      <TableCell
-        numeric
-        theme={styles}
-        className={bgColorSelect(4300)}
-      >{
-        4300}
-      </TableCell>
-    </TableRow>
-  </Table>
-);
+const getTotalUpToThisMonth = (startAmount, common, allDates, currentDate, startDate) => {
+  const allMonthTotals = Object.keys(allDates).reduce((prevTotal, date) => {
+    if (isBefore(date, currentDate)) {
+      return prevTotal + allDates[date].monthTotal;
+    }
+    return prevTotal;
+  }, startAmount);
+  const commonTotals = common * countMonths(startDate, currentDate);
+  return allMonthTotals + commonTotals;
+};
+
+const Totals = (props) => {
+  const monthTotal = props.monthTotal + props.commonTotal;
+  const totalToDate = getTotalUpToThisMonth(
+    props.startAmount,
+    props.commonTotal,
+    props.allDates,
+    props.currentDate,
+    props.startDate,
+  ) + monthTotal;
+  return (
+    <Table selectable={false} theme={styles}>
+      <TableHead>
+        <TableCell theme={styles}>Month total</TableCell>
+        <TableCell theme={styles}>Total to date (inc. this month)</TableCell>
+      </TableHead>
+      <TableRow theme={styles}>
+        <TableCell
+          numeric
+          theme={styles}
+          className={bgColorSelect(monthTotal)}
+        >
+          {monthTotal}
+        </TableCell>
+        <TableCell
+          numeric
+          theme={styles}
+          className={bgColorSelect(totalToDate)}
+        >
+          {totalToDate}
+        </TableCell>
+      </TableRow>
+    </Table>
+  );
+};
 
 Totals.propTypes = {
-  monthTotal: PropTypes.number,
+  monthTotal: PropTypes.number.isRequired,
+  commonTotal: PropTypes.number,
+  startAmount: PropTypes.number.isRequired,
+  currentDate: PropTypes.string.isRequired,
+  allDates: PropTypes.object.isRequired,
+  startDate: PropTypes.string.isRequired,
 };
 
 Totals.defaultProps = {
   monthTotal: 0,
+  commonTotal: 0,
 };
 
 const mapStateToProps = (state) => {
+  let monthTotal = 0;
   if (state.dates[state.currentDate]) {
-    return ({
-      monthTotal: state.dates[state.currentDate].monthTotal,
-    });
+    monthTotal = state.dates[state.currentDate].monthTotal;
   }
-  return {};
+  return {
+    monthTotal,
+    commonTotal: state.settings.commonTotal,
+    startAmount: state.settings.startAmount,
+    currentDate: state.currentDate,
+    allDates: state.dates,
+    startDate: state.settings.startDate,
+  };
 };
 
 export default connect(

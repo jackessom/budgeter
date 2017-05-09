@@ -6,6 +6,7 @@ import { Input, DatePicker, ListSubHeader, AppBar } from 'react-toolbox';
 import { saveSettings, toggleSidebar } from '../../actions';
 import DynamicList from '../../components/dynamicList/DynamicList';
 import guid from '../../helpers/guid';
+import { getISODate } from '../../helpers/dates';
 import styles from './settings.css';
 import { padding } from '../../styles/base.css';
 
@@ -15,7 +16,6 @@ class Settings extends Component {
     super(props);
     this.state = {
       id: this.props.id,
-      name: this.props.name,
       startDate: this.props.startDate,
       startAmount: this.props.startAmount,
     };
@@ -30,15 +30,16 @@ class Settings extends Component {
   }
 
   handleDatepickerChange(value, event) {
+    const month = moment.utc(value).month() + 1;
+    const year = moment.utc(value).year();
     const newSettings = Object.assign({}, this.createSettingsObject(), {
-      [event.target.name]: value,
+      [event.target.name]: getISODate(year, month),
     });
     this.props.saveSettings(newSettings);
   }
 
   handleBasicSettings() {
     const newSettings = Object.assign({}, this.createSettingsObject(), {
-      name: this.state.name,
       startAmount: parseFloat(this.state.startAmount),
     });
     this.props.saveSettings(newSettings);
@@ -54,7 +55,6 @@ class Settings extends Component {
   createSettingsObject() {
     return {
       id: this.props.id,
-      name: this.props.name,
       startDate: this.props.startDate,
       startAmount: this.props.startAmount,
       outgoings: this.props.outgoings,
@@ -104,16 +104,6 @@ class Settings extends Component {
           <ListSubHeader caption="Basic" />
           <div>
             <Input
-              type="text"
-              label="Name"
-              name="name"
-              value={this.state.name}
-              onChange={(value, event) => { this.handleChange(value, event); }}
-              onBlur={() => { this.handleBasicSettings(); }}
-              maxLength={16}
-              theme={styles}
-            />
-            <Input
               type="number"
               label="Starting amount"
               name="startAmount"
@@ -125,10 +115,9 @@ class Settings extends Component {
             <DatePicker
               label="Start date"
               name="startDate"
-              minDate={moment.utc().subtract(1, 'day').toDate()}
               onChange={(value, event) => { this.handleDatepickerChange(value, event); }}
-              value={this.props.startDate}
-              inputFormat={value => moment(value).format('MMMM Do YYYY')}
+              value={moment.utc(this.props.startDate).add(1, 'days').toDate()}
+              inputFormat={value => moment.utc(value).format('MMMM YYYY')}
               theme={styles}
             />
           </div>
@@ -141,8 +130,7 @@ class Settings extends Component {
 
 Settings.propTypes = {
   id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  startDate: PropTypes.instanceOf(Date).isRequired,
+  startDate: PropTypes.string.isRequired,
   startAmount: PropTypes.number.isRequired,
   outgoings: PropTypes.object.isRequired,
   incomings: PropTypes.object.isRequired,
@@ -152,16 +140,14 @@ Settings.propTypes = {
 
 Settings.defaultProps = {
   id: guid(),
-  name: '',
-  startDate: new Date(),
-  startAmount: 0.00,
+  startDate: getISODate(moment.utc(new Date()).year(), moment.utc(new Date()).month() + 1),
+  startAmount: 0,
   outgoings: {},
   incomings: {},
 };
 
 const mapStateToProps = state => ({
   id: state.settings.id,
-  name: state.settings.name,
   startDate: state.settings.startDate,
   startAmount: state.settings.startAmount,
   outgoings: state.settings.outgoings,
