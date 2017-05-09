@@ -22,7 +22,14 @@ class DynamicList extends Component {
       dialogIsActive: false,
       dialogActions: this.dialogActions,
       newItem: false,
+      actionClicked: false,
     };
+  }
+
+  componentDidUpdate() {
+    if (this.state.actionClicked) {
+      this.closeDialog();
+    }
   }
 
   getPlainItem(item, key) {
@@ -87,7 +94,7 @@ class DynamicList extends Component {
   }
 
   closeDialog() {
-    this.setState({ dialogIsActive: false });
+    this.setState({ dialogIsActive: false, actionClicked: false });
   }
 
   addNewListItem() {
@@ -99,14 +106,14 @@ class DynamicList extends Component {
       [this.state.currentItemId]: this.state.dialogValues,
     });
     this.props.handleListChange(newItemList, this.props.name);
-    this.closeDialog();
+    this.setState({ actionClicked: true });
   }
 
   deleteListItem() {
     const newItemList = Object.assign({}, this.props.items);
     delete newItemList[this.state.currentItemId];
     this.props.handleListChange(newItemList, this.props.name);
-    this.closeDialog();
+    this.setState({ actionClicked: true });
   }
 
   handleInputChange(name, event) {
