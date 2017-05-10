@@ -7,16 +7,20 @@ import Month from '../../containers/month/Month';
 import { toggleSidebar } from '../../actions';
 import styles from './app.css';
 import { padding } from '../../styles/base.css';
+import { appBar } from '../../styles/global.css';
 
 const App = props => (
   <div>
-    <AppBar
-      title="Budgeter"
-      rightIcon="settings"
-      onRightIconClick={() => { props.openSidebar(); }}
-    />
     <Layout>
-      <Panel className={padding} theme={styles}>
+      <AppBar
+        title="Budgeter"
+        rightIcon="settings"
+        onRightIconClick={() => { props.openSidebar(); }}
+        fixed
+        flat
+        className={appBar}
+      />
+      <Panel theme={styles} className={padding}>
         <Month />
       </Panel>
       <Sidebar

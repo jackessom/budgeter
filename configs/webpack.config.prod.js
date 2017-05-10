@@ -40,7 +40,7 @@ module.exports = {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(
           'style',
-          'css&modules',
+          'css?modules',
           'postcss-loader'
         ),
       },

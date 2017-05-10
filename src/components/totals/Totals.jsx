@@ -62,11 +62,11 @@ const Totals = (props) => {
 
 Totals.propTypes = {
   monthTotal: PropTypes.number.isRequired,
-  commonTotal: PropTypes.number.isRequired,
-  startAmount: PropTypes.number.isRequired,
+  commonTotal: PropTypes.number,
+  startAmount: PropTypes.number,
   currentDate: PropTypes.string.isRequired,
   allDates: PropTypes.object.isRequired,
-  startDate: PropTypes.string.isRequired,
+  startDate: PropTypes.string,
 };
 
 Totals.defaultProps = {

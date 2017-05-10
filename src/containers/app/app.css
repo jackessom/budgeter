@@ -3,7 +3,9 @@
 .panel {
   max-width: 600px;
   margin: auto;
+
   @media screen and (--smTablet-viewport) {
     right: 0 !important;
+    top: 44px !important;
   }
 }

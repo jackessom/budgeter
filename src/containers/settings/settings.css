@@ -14,3 +14,11 @@
 .label {
   padding-left: var(--padding);
 }
+
+@custom-media --smTablet-viewport (max-width: 720px);
+
+.form {
+  @media screen and (--smTablet-viewport) {
+    margin-top: 44px;
+  }
+}

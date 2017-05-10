@@ -1,0 +1,15 @@
+@import '../../node_modules/react-toolbox/lib/variables.css';
+
+:root {
+  --padding: calc(1.6 * var(--unit));
+}
+
+@custom-media --smTablet-viewport (max-width: 720px);
+
+.appBar {
+  padding-right: calc(var(--padding) * 1.5) !important;
+
+  @media screen and (--smTablet-viewport) {
+    height: initial;
+  }
+}
