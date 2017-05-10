@@ -9,7 +9,6 @@ import guid from '../../helpers/guid';
 import { getISODate, getTodaysMonth } from '../../helpers/dates';
 import styles from './settings.css';
 import { padding } from '../../styles/base.css';
-import { appBar } from '../../styles/global.css';
 
 class Settings extends Component {
 
@@ -104,12 +103,12 @@ class Settings extends Component {
           title="Settings"
           rightIcon="close"
           onRightIconClick={() => { this.props.closeSidebar(); }}
-          fixed
+          leftIcon="arrow_back"
+          onLeftIconClick={() => { this.props.closeSidebar(); }}
           flat
-          className={appBar}
-          scrollHide={false}
+          theme={styles}
         />
-        <form className={`${padding} ${styles.form}`}>
+        <form className={padding}>
           <ListSubHeader caption="Basic" />
           <div>
             <Input

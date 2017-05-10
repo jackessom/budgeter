@@ -43,7 +43,7 @@ module.exports = {
         loader: 'json'
       },
       {
-        test: /\.svg$/,
+        test: /\.(jpg|png|svg)$/,
         loader: 'file',
         query: {
           name: 'assets/images/[name].[hash:8].[ext]'

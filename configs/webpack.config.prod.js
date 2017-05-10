@@ -2,6 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var reactToolboxVariables = {
   'color-primary': 'var(--palette-blue-500)',
@@ -19,7 +20,7 @@ module.exports = {
   output: {
     path: path.resolve(process.cwd(), 'build'),
     filename: 'bundle.js',
-    publicPath: '/'
+    publicPath: '/budgeter'
   },
   module: {
     noParse: /node_modules\/localforage\/dist\/localforage.js/,
@@ -38,11 +39,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract(
+        loaders: ['style', 'css?modules', 'postcss-loader'],
+        /* loader: ExtractTextPlugin.extract(
           'style',
           'css?modules',
           'postcss-loader'
-        ),
+        ), */
       },
       {
         test: /\.json$/,
@@ -94,7 +96,17 @@ module.exports = {
       }
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
-    new ExtractTextPlugin('assets/css/[name].[contenthash:8].css'),
+    // new ExtractTextPlugin('assets/css/[name].[contenthash:8].css'),
+    // copy web manifest stuff over to build
+    new CopyWebpackPlugin([
+      { from: path.join(process.cwd(), 'public') }
+    ], {
+      ignore: [
+        '*.html',
+        '.DS_Store',
+      ],
+      copyUnmodified: true
+    })
   ],
   postcss: function (webpack) {
     return [

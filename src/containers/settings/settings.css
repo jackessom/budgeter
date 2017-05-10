@@ -15,10 +15,17 @@
   padding-left: var(--padding);
 }
 
-@custom-media --smTablet-viewport (max-width: 720px);
+@custom-media --xs-viewport (max-width: 600px);
+@custom-media --larger-than-xs-viewport (min-width: 600px);
 
-.form {
-  @media screen and (--smTablet-viewport) {
-    margin-top: 44px;
+.leftIcon {
+  @media screen and (--larger-than-xs-viewport) {
+    display: none;
+  }
+}
+
+.rightIcon {
+  @media screen and (--xs-viewport) {
+    display: none;
   }
 }

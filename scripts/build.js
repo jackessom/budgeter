@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'production';
 
 var webpack = require("webpack");
 
-var config = require("../configs/webpack.config.dev");
+var config = require("../configs/webpack.config.prod");
 
 console.log('starting build...');
 

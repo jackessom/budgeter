@@ -4,12 +4,13 @@
   --padding: calc(1.6 * var(--unit));
 }
 
-@custom-media --smTablet-viewport (max-width: 720px);
+@custom-media --xs-viewport (max-width: 600px);
+@custom-media --larger-than-xs-viewport (min-width: 600px);
 
 .appBar {
   padding-right: calc(var(--padding) * 1.5) !important;
 
-  @media screen and (--smTablet-viewport) {
+  @media screen and (--xs-viewport) {
     height: initial;
   }
 }

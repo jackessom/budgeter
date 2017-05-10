@@ -8,14 +8,15 @@ import { toggleSidebar } from '../../actions';
 import styles from './app.css';
 import { padding } from '../../styles/base.css';
 import { appBar } from '../../styles/global.css';
+import logo from './logo.png';
 
 const App = props => (
   <div>
     <Layout>
       <AppBar
-        title="Budgeter"
         rightIcon="settings"
         onRightIconClick={() => { props.openSidebar(); }}
+        leftIcon={<img src={logo} alt="Budgeter" style={{ width: '100%' }} />}
         fixed
         flat
         className={appBar}
@@ -26,6 +27,7 @@ const App = props => (
       <Sidebar
         pinned={props.sidebarVisibility}
         width={5}
+        theme={styles}
       >
         <Settings />
       </Sidebar>

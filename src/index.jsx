@@ -6,6 +6,7 @@ import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage from 'localforage';
 import logger from 'redux-logger';
 import 'normalize.css';
+import 'material-design-icons';
 import reducers from './reducers';
 import App from './containers/app/App';
 
