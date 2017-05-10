@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var OfflinePlugin = require('offline-plugin');
 
 var reactToolboxVariables = {
   'color-primary': 'var(--palette-blue-500)',
@@ -20,7 +21,7 @@ module.exports = {
   output: {
     path: path.resolve(process.cwd(), 'build'),
     filename: 'bundle.js',
-    publicPath: '/budgeter'
+    publicPath: '/budgeter/'
   },
   module: {
     noParse: /node_modules\/localforage\/dist\/localforage.js/,
@@ -113,7 +114,8 @@ module.exports = {
         '.DS_Store',
       ],
       copyUnmodified: true
-    })
+    }),
+    new OfflinePlugin()
   ],
   postcss: function (webpack) {
     return [

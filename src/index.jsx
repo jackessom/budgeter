@@ -5,10 +5,13 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import localForage from 'localforage';
 import logger from 'redux-logger';
+import * as OfflinePluginRuntime from 'offline-plugin/runtime';
 import 'normalize.css';
 import './styles/fonts.css';
 import reducers from './reducers';
 import App from './containers/app/App';
+
+OfflinePluginRuntime.install();
 
 const store = createStore(
   reducers,
