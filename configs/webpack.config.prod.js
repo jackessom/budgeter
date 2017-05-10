@@ -22,6 +22,7 @@ module.exports = {
     publicPath: '/'
   },
   module: {
+    noParse: /node_modules\/localforage\/dist\/localforage.js/,
     preLoaders: [
       {
         test: /\.(js|jsx)$/,

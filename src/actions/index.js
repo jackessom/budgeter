@@ -8,10 +8,10 @@ export const toggleSidebar = sidebarVisible => ({
 
 export const saveSettings = (settings) => {
   const commonOutgoingTotal = Object.keys(settings.outgoings).reduce((prevTotal, key) => (
-    prevTotal + settings.outgoings[key].value
+    prevTotal + parseFloat(settings.outgoings[key].value)
   ), 0);
   const commonIncomingTotal = Object.keys(settings.incomings).reduce((prevTotal, key) => (
-    prevTotal + settings.incomings[key].value
+    prevTotal + parseFloat(settings.incomings[key].value)
   ), 0);
   const newSettings = Object.assign({}, settings, {
     commonTotal: commonIncomingTotal - commonOutgoingTotal,
