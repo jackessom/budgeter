@@ -51,12 +51,19 @@ module.exports = {
         loader: 'json'
       },
       {
-        test: /\.svg$/,
+        test: /\.(jpg|png|gif|svg)$/,
         loader: 'file',
         query: {
           name: 'assets/images/[name].[hash:8].[ext]'
         }
-      }
+      },
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: 'file-loader',
+        query: {
+          name: 'assets/fonts/[name].[ext]',
+        },
+      },
     ]
   },
   plugins: [

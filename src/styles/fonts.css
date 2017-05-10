@@ -2,18 +2,18 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url('../fonts/materialIcons/MaterialIcons-Regular.eot'); /* For IE6-8 */
+  src: url('../fonts/MaterialIcons-Regular.eot'); /* For IE6-8 */
   src:
     local('Material Icons'),
     local('MaterialIcons-Regular'),
-    url('../fonts/materialIcons/MaterialIcons-Regular.woff2') format('woff2'),
-    url('../fonts/materialIcons/MaterialIcons-Regular.woff') format('woff'),
-    url('../fonts/materialIcons/MaterialIcons-Regular.ttf') format('truetype');
+    url('../fonts/MaterialIcons-Regular.woff2') format('woff2'),
+    url('../fonts/MaterialIcons-Regular.woff') format('woff'),
+    url('../fonts/MaterialIcons-Regular.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Roboto';
-  src: url('../fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  src: url('../fonts/Roboto-Regular.ttf') format('truetype');
 }
 
 /* stylelint-disable */
