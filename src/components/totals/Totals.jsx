@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Table, TableHead, TableRow, TableCell } from 'react-toolbox';
-import { isBefore, countMonths } from '../../helpers/dates';
+import { isBefore, countMonths, getTodaysMonth } from '../../helpers/dates';
 import styles from './totals.css';
 
 const bgColorSelect = (amount) => {
@@ -62,7 +62,7 @@ const Totals = (props) => {
 
 Totals.propTypes = {
   monthTotal: PropTypes.number.isRequired,
-  commonTotal: PropTypes.number,
+  commonTotal: PropTypes.number.isRequired,
   startAmount: PropTypes.number.isRequired,
   currentDate: PropTypes.string.isRequired,
   allDates: PropTypes.object.isRequired,
@@ -70,8 +70,9 @@ Totals.propTypes = {
 };
 
 Totals.defaultProps = {
-  monthTotal: 0,
   commonTotal: 0,
+  startAmount: 0,
+  startDate: getTodaysMonth(),
 };
 
 const mapStateToProps = (state) => {

@@ -41,13 +41,6 @@ export function getMonthString(ISODate) {
   return moment.utc(ISODate).format('MMMM');
 }
 
-export function isBefore(dateToCheck, baseDate) {
-  if (moment(dateToCheck).diff(baseDate) < 0) {
-    return true;
-  }
-  return false;
-}
-
 export function countMonths(startDate, endDate) {
   const startDateObject = new Date(startDate);
   const endDateObject = new Date(endDate);
@@ -56,4 +49,15 @@ export function countMonths(startDate, endDate) {
   months -= startDateObject.getMonth() + 1;
   months += endDateObject.getMonth() + 1;
   return months <= 0 ? 0 : months;
+}
+
+export function isBefore(dateToCheck, baseDate) {
+  if ((moment.utc(dateToCheck).valueOf() - moment.utc(baseDate).valueOf()) < 0) {
+    return true;
+  }
+  return false;
+}
+
+export function getTodaysMonth() {
+  return getISODate(moment.utc(new Date()).year(), moment.utc(new Date()).month() + 1);
 }

@@ -35,9 +35,9 @@ export const goToPreviousMonth = date => ({
 export const saveMonth = (date, dateObject) => {
   const monthTotal = Object.keys(dateObject.items).reduce((prevTotal, key) => {
     if (dateObject.items[key].type === 'incoming') {
-      return prevTotal + dateObject.items[key].value;
+      return prevTotal + parseFloat(dateObject.items[key].value);
     } else if (dateObject.items[key].type === 'outgoing') {
-      return prevTotal - dateObject.items[key].value;
+      return prevTotal - parseFloat(dateObject.items[key].value);
     }
     return prevTotal;
   }, 0);

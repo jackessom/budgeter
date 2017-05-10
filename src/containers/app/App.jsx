@@ -5,6 +5,7 @@ import { Layout, Panel, Sidebar, AppBar } from 'react-toolbox';
 import Settings from '../../containers/settings/Settings';
 import Month from '../../containers/month/Month';
 import { toggleSidebar } from '../../actions';
+import styles from './app.css';
 import { padding } from '../../styles/base.css';
 
 const App = props => (
@@ -15,7 +16,7 @@ const App = props => (
       onRightIconClick={() => { props.openSidebar(); }}
     />
     <Layout>
-      <Panel className={padding}>
+      <Panel className={padding} theme={styles}>
         <Month />
       </Panel>
       <Sidebar

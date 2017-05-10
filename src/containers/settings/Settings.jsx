@@ -6,7 +6,7 @@ import { Input, DatePicker, ListSubHeader, AppBar } from 'react-toolbox';
 import { saveSettings, toggleSidebar } from '../../actions';
 import DynamicList from '../../components/dynamicList/DynamicList';
 import guid from '../../helpers/guid';
-import { getISODate } from '../../helpers/dates';
+import { getISODate, getTodaysMonth } from '../../helpers/dates';
 import styles from './settings.css';
 import { padding } from '../../styles/base.css';
 
@@ -23,6 +23,10 @@ class Settings extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
     this.handleDynamicListChange = this.handleDynamicListChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.saveSettings(this.createSettingsObject());
   }
 
   handleChange(value, event) {
@@ -140,7 +144,7 @@ Settings.propTypes = {
 
 Settings.defaultProps = {
   id: guid(),
-  startDate: getISODate(moment.utc(new Date()).year(), moment.utc(new Date()).month() + 1),
+  startDate: getTodaysMonth(),
   startAmount: 0,
   outgoings: {},
   incomings: {},
