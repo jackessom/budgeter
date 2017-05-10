@@ -19,7 +19,7 @@ const App = props => (
         leftIcon={<img src={logo} alt="Budgeter" style={{ width: '100%' }} />}
         fixed
         flat
-        className={appBar}
+        className={`${appBar} ${styles.appBar}`}
       />
       <Panel theme={styles} className={padding}>
         <Month />
@@ -27,7 +27,7 @@ const App = props => (
       <Sidebar
         pinned={props.sidebarVisibility}
         width={5}
-        theme={styles}
+        className={styles.sidebar}
       >
         <Settings />
       </Sidebar>

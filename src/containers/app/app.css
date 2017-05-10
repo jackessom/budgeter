@@ -1,11 +1,10 @@
 @custom-media --xs-viewport (max-width: 600px);
-@custom-media --smTablet-viewport (max-width: 720px);
 
 .panel {
   max-width: 600px;
   margin: auto;
 
-  @media screen and (--smTablet-viewport) {
+  @media screen and (--xs-viewport) {
     right: 0 !important;
     top: 44px !important;
   }
@@ -13,6 +12,10 @@
 
 .sidebar {
   @media screen and (--xs-viewport) {
-    border-left: 0;
+    border-left: 0 !important;
   }
+}
+
+.appBar button {
+  display: block !important;
 }

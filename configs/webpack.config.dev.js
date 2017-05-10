@@ -12,7 +12,7 @@ var reactToolboxVariables = {
 module.exports = {
   devtool: 'cheap-module-source-map',
   entry: [
-    path.join(process.cwd(), 'src/index.jsx'),
+    path.join(process.cwd(), 'src/index.jsx')
   ],
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -43,12 +43,19 @@ module.exports = {
         loader: 'json'
       },
       {
-        test: /\.(jpg|png|svg)$/,
+        test: /\.(jpg|png|gif|svg)$/,
         loader: 'file',
         query: {
           name: 'assets/images/[name].[hash:8].[ext]'
         }
-      }
+      },
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'assets/fonts/[name].[ext]',
+        },
+      },
     ]
   },
   plugins: [
