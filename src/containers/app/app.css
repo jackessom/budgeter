@@ -1,6 +1,8 @@
 @custom-media --smTablet-viewport (max-width: 720px);
 
 .panel {
+  max-width: 600px;
+  margin: auto;
   @media screen and (--smTablet-viewport) {
     right: 0 !important;
   }

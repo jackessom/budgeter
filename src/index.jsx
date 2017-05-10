@@ -17,7 +17,7 @@ const store = createStore(
   ),
 );
 
-persistStore(store, { storage: localForage });
+persistStore(store, { storage: localForage, keyPrefix: 'budgeter' });
 
 render(
   <Provider store={store}>
