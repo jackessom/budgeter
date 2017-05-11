@@ -40,10 +40,6 @@ class Month extends Component {
       value: '',
       type: '',
     };
-    console.log(`
-      LENGTH OF DATES OBJECT:
-      --- ${Object.keys(this.props.allDates).length} ---
-    `);
     return (
       <Swipeable onSwiped={this.handleSwipe}>
         <Header swipeX={this.state.swipeX} resetSwipe={this.resetSwipe} />
