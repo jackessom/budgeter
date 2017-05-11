@@ -78,7 +78,6 @@ Month.propTypes = {
   date: PropTypes.object,
   currentDate: PropTypes.string.isRequired,
   saveMonth: PropTypes.func.isRequired,
-  allDates: PropTypes.object.isRequired,
 };
 
 Month.defaultProps = {
@@ -91,7 +90,6 @@ Month.defaultProps = {
 const mapStateToProps = state => ({
   date: state.dates[state.currentDate],
   currentDate: state.currentDate,
-  allDates: state.dates,
 });
 
 const mapDispatchToProps = dispatch => ({
