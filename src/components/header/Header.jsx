@@ -22,6 +22,16 @@ class Header extends Component {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.swipeX > 0 && !this.state.disablePrevious) {
+      this.props.goToPreviousMonth(this.props.date);
+      this.props.resetSwipe();
+    } else if (this.props.swipeX < 0) {
+      this.props.goToNextMonth(this.props.date);
+      this.props.resetSwipe();
+    }
+  }
+
   render() {
     return (
       <Card>
@@ -56,6 +66,8 @@ Header.propTypes = {
   goToPreviousMonth: PropTypes.func.isRequired,
   date: PropTypes.string.isRequired,
   startDate: PropTypes.string.isRequired,
+  swipeX: PropTypes.number.isRequired,
+  resetSwipe: PropTypes.func.isRequired,
 };
 
 Header.defaultProps = {

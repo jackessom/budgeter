@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Swipeable from 'react-swipeable';
 import { Input, RadioGroup, RadioButton } from 'react-toolbox';
 import { saveMonth } from '../../actions';
 import Header from '../../components/header/Header';
@@ -12,12 +13,25 @@ class Month extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { swipeX: 0 };
     this.handleListChange = this.handleListChange.bind(this);
+    this.handleSwipe = this.handleSwipe.bind(this);
+    this.resetSwipe = this.resetSwipe.bind(this);
   }
 
   handleListChange(items) {
     const updatedMonth = Object.assign({}, this.props.date, { items });
     this.props.saveMonth(this.props.currentDate, updatedMonth);
+  }
+
+  handleSwipe(e, x, y, isFlick, velocity) {
+    if (velocity > 0.5) {
+      this.setState({ swipeX: x });
+    }
+  }
+
+  resetSwipe() {
+    this.setState({ swipeX: 0 });
   }
 
   render() {
@@ -27,8 +41,8 @@ class Month extends Component {
       type: '',
     };
     return (
-      <div>
-        <Header />
+      <Swipeable onSwiped={this.handleSwipe}>
+        <Header swipeX={this.state.swipeX} resetSwipe={this.resetSwipe} />
         <Totals />
         <DynamicList
           name="monthItems"
@@ -55,7 +69,7 @@ class Month extends Component {
             <RadioButton label="Outgoing" value="outgoing" />
           </RadioGroup>
         </DynamicList>
-      </div>
+      </Swipeable>
     );
   }
 }
