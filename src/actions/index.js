@@ -22,15 +22,40 @@ export const saveSettings = (settings) => {
   };
 };
 
-export const goToNextMonth = date => ({
-  type: types.GO_TO_NEXT_MONTH,
-  newDate: getNextMonth(date),
+export const removeEmptyDates = (dates) => {
+  const newDates = Object.keys(dates).reduce((currentTotalDates, date) => {
+    const tempTotalDates = Object.assign({}, currentTotalDates);
+    if (Object.keys(dates[date].items).length !== 0) {
+      tempTotalDates[date] = dates[date];
+    }
+    return tempTotalDates;
+  }, {});
+  return {
+    type: types.REMOVE_DATES,
+    newDates,
+  };
+};
+
+export const goToDate = date => ({
+  type: types.GO_TO_DATE,
+  newDate: date,
 });
 
-export const goToPreviousMonth = date => ({
-  type: types.GO_TO_PREVIOUS_MONTH,
-  newDate: getPreviousMonth(date),
-});
+export const goToNextMonth = date => (
+  (dispatch, getState) => {
+    dispatch(goToDate(getNextMonth(date)));
+    const { dates } = getState();
+    dispatch(removeEmptyDates(dates));
+  }
+);
+
+export const goToPreviousMonth = date => (
+  (dispatch, getState) => {
+    dispatch(goToDate(getPreviousMonth(date)));
+    const { dates } = getState();
+    dispatch(removeEmptyDates(dates));
+  }
+);
 
 export const saveMonth = (date, dateObject) => {
   const monthTotal = Object.keys(dateObject.items).reduce((prevTotal, key) => {
@@ -45,13 +70,8 @@ export const saveMonth = (date, dateObject) => {
     monthTotal,
   });
   return {
-    type: types.SAVE_MONTH,
+    type: types.SAVE_DATE,
     date,
     dateObject: newDateObject,
   };
 };
-
-export const removeMonth = date => ({
-  type: types.REMOVE_MONTH,
-  date,
-});

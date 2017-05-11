@@ -2,7 +2,6 @@ export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 
-export const GO_TO_NEXT_MONTH = 'GO_TO_NEXT_MONTH';
-export const GO_TO_PREVIOUS_MONTH = 'GO_TO_PREVIOUS_MONTH';
-export const SAVE_MONTH = 'SAVE_MONTH';
-export const REMOVE_MONTH = 'REMOVE_MONTH';
+export const GO_TO_DATE = 'GO_TO_DATE';
+export const SAVE_DATE = 'SAVE_DATE';
+export const REMOVE_DATES = 'REMOVE_DATES';

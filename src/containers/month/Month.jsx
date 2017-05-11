@@ -40,6 +40,10 @@ class Month extends Component {
       value: '',
       type: '',
     };
+    console.log(`
+      LENGTH OF DATES OBJECT:
+      --- ${Object.keys(this.props.allDates).length} ---
+    `);
     return (
       <Swipeable onSwiped={this.handleSwipe}>
         <Header swipeX={this.state.swipeX} resetSwipe={this.resetSwipe} />
@@ -78,6 +82,7 @@ Month.propTypes = {
   date: PropTypes.object,
   currentDate: PropTypes.string.isRequired,
   saveMonth: PropTypes.func.isRequired,
+  allDates: PropTypes.object.isRequired,
 };
 
 Month.defaultProps = {
@@ -90,6 +95,7 @@ Month.defaultProps = {
 const mapStateToProps = state => ({
   date: state.dates[state.currentDate],
   currentDate: state.currentDate,
+  allDates: state.dates,
 });
 
 const mapDispatchToProps = dispatch => ({

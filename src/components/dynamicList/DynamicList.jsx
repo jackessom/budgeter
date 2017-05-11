@@ -120,10 +120,6 @@ class DynamicList extends Component {
     return allFieldsFilled;
   }
 
-  validateField(event) {
-    console.log('VALIDATE 2', event.length, this);
-  }
-
   saveListItem() {
     if (this.validateAllFields()) {
       const newItemList = Object.assign({}, this.props.items, {
@@ -153,10 +149,7 @@ class DynamicList extends Component {
   render() {
     const dialogItems = React.Children.map(this.props.children, child => (
       React.cloneElement(child, {
-        onChange: (event) => {
-          this.validateField(event);
-          this.handleInputChange(child.props.name, event);
-        },
+        onChange: (event) => { this.handleInputChange(child.props.name, event); },
         value: this.state.dialogValues[child.props.name],
       })
     ));
