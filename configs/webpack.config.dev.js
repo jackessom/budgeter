@@ -1,7 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var OfflinePlugin = require('offline-plugin');
 
 var reactToolboxVariables = {
   'color-primary': 'var(--palette-blue-500)',
@@ -64,8 +63,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'My App',
       template: 'public/index.html'
-    }),
-    new OfflinePlugin()
+    })
   ],
   postcss: function (webpack) {
     return [

@@ -43,8 +43,10 @@ class Settings extends Component {
   }
 
   handleBasicSettings() {
+    let startAmount = parseFloat(this.state.startAmount);
+    if (isNaN(startAmount)) { startAmount = 0; }
     const newSettings = Object.assign({}, this.createSettingsObject(), {
-      startAmount: parseFloat(this.state.startAmount),
+      startAmount,
     });
     this.props.saveSettings(newSettings);
   }
@@ -137,11 +139,11 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  id: PropTypes.string.isRequired,
-  startDate: PropTypes.string.isRequired,
-  startAmount: PropTypes.number.isRequired,
-  outgoings: PropTypes.object.isRequired,
-  incomings: PropTypes.object.isRequired,
+  id: PropTypes.string,
+  startDate: PropTypes.string,
+  startAmount: PropTypes.number,
+  outgoings: PropTypes.object,
+  incomings: PropTypes.object,
   saveSettings: PropTypes.func.isRequired,
   closeSidebar: PropTypes.func.isRequired,
 };

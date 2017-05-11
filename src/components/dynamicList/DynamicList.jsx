@@ -23,6 +23,7 @@ class DynamicList extends Component {
       dialogActions: this.dialogActions,
       newItem: false,
       actionClicked: false,
+      errorMessage: null,
     };
   }
 
@@ -69,6 +70,10 @@ class DynamicList extends Component {
     );
   }
 
+  setErrorMessage(errorMessage) {
+    this.setState({ errorMessage });
+  }
+
   openDialog(itemId) {
     let tempState;
     if (this.props.items[itemId]) {
@@ -88,9 +93,12 @@ class DynamicList extends Component {
         dialogTitle: 'Add a new item',
       });
     }
-    tempState.dialogIsActive = true;
-    tempState.currentItemId = itemId;
-    this.setState(tempState);
+    this.setState({
+      ...tempState,
+      errorMessage: null,
+      currentItemId: itemId,
+      dialogIsActive: true,
+    });
   }
 
   closeDialog() {
@@ -101,12 +109,31 @@ class DynamicList extends Component {
     this.openDialog(guid());
   }
 
+  validateAllFields() {
+    let allFieldsFilled = true;
+    for (let i = 0; i < Object.values(this.state.dialogValues).length; i += 1) {
+      if (Object.values(this.state.dialogValues)[i].length < 1) {
+        allFieldsFilled = false;
+        break;
+      }
+    }
+    return allFieldsFilled;
+  }
+
+  validateField(event) {
+    console.log('VALIDATE 2', event.length, this);
+  }
+
   saveListItem() {
-    const newItemList = Object.assign({}, this.props.items, {
-      [this.state.currentItemId]: this.state.dialogValues,
-    });
-    this.props.handleListChange(newItemList, this.props.name);
-    this.setState({ actionClicked: true });
+    if (this.validateAllFields()) {
+      const newItemList = Object.assign({}, this.props.items, {
+        [this.state.currentItemId]: this.state.dialogValues,
+      });
+      this.props.handleListChange(newItemList, this.props.name);
+      this.setState({ actionClicked: true, errorMessage: null });
+    } else {
+      this.setErrorMessage('Please make sure all fields are entered before saving');
+    }
   }
 
   deleteListItem() {
@@ -127,6 +154,7 @@ class DynamicList extends Component {
     const dialogItems = React.Children.map(this.props.children, child => (
       React.cloneElement(child, {
         onChange: (event) => {
+          this.validateField(event);
           this.handleInputChange(child.props.name, event);
         },
         value: this.state.dialogValues[child.props.name],
@@ -162,6 +190,9 @@ class DynamicList extends Component {
           theme={styles}
         >
           {dialogItems}
+          {this.state.errorMessage &&
+            <p className={styles.error}>{this.state.errorMessage}</p>
+          }
         </Dialog>
       </div>
     );

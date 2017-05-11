@@ -45,3 +45,12 @@
     background-color: var(--palette-red-700);
   }
 }
+
+.error {
+  color: red;
+}
+
+.saveButtonDisabled {
+  cursor: not-allowed;
+  opacity: 0.1;
+}
