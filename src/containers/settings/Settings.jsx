@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Input, DatePicker, ListSubHeader, AppBar } from 'react-toolbox';
+import { Input, ListSubHeader, AppBar, Dropdown } from 'react-toolbox';
 import { saveSettings, toggleSidebar } from '../../actions';
 import DynamicList from '../../components/dynamicList/DynamicList';
 import guid from '../../helpers/guid';
-import { getISODate, getTodaysMonth } from '../../helpers/dates';
+import { getISODate, getTodaysMonth, getArrayOfYears } from '../../helpers/dates';
 import styles from './settings.css';
 import { padding } from '../../styles/base.css';
 
@@ -18,31 +18,56 @@ class Settings extends Component {
       id: this.props.id,
       startDate: this.props.startDate,
       startAmount: this.props.startAmount,
+      years: getArrayOfYears(this.props.startDate),
     };
+    this.months = [
+      { value: 1, label: 'January' },
+      { value: 2, label: 'February' },
+      { value: 3, label: 'March' },
+      { value: 4, label: 'April' },
+      { value: 5, label: 'May' },
+      { value: 6, label: 'June' },
+      { value: 7, label: 'July' },
+      { value: 8, label: 'August' },
+      { value: 9, label: 'September' },
+      { value: 10, label: 'October' },
+      { value: 11, label: 'November' },
+      { value: 12, label: 'December' },
+    ];
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleDatepickerChange = this.handleDatepickerChange.bind(this);
+    this.handleStartAmount = this.handleStartAmount.bind(this);
     this.handleDynamicListChange = this.handleDynamicListChange.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
   }
 
   componentDidMount() {
     this.props.saveSettings(this.createSettingsObject());
   }
 
-  handleChange(value, event) {
-    this.setState({ [event.target.name]: value });
+  componentWillReceiveProps(nextProps) {
+    this.setState({ years: getArrayOfYears(nextProps.startDate) });
   }
 
-  handleDatepickerChange(value, event) {
-    const month = moment.utc(value).month() + 1;
-    const year = moment.utc(value).year();
+  handleDateChange(value) {
+    const valueNumber = value;
+    let month = moment.utc(this.props.startDate).month() + 1;
+    let year = moment.utc(this.props.startDate).year();
+    if (valueNumber > 12) {
+      year = valueNumber;
+    } else {
+      month = valueNumber;
+    }
     const newSettings = Object.assign({}, this.createSettingsObject(), {
-      [event.target.name]: getISODate(year, month),
+      startDate: getISODate(year, month),
     });
     this.props.saveSettings(newSettings);
   }
 
-  handleBasicSettings() {
+  handleStartAmount(value) {
+    this.setState({ startAmount: value });
+  }
+
+  handleStartAmountSave() {
     let startAmount = parseFloat(this.state.startAmount);
     if (isNaN(startAmount)) { startAmount = 0; }
     const newSettings = Object.assign({}, this.createSettingsObject(), {
@@ -118,16 +143,22 @@ class Settings extends Component {
               label="Starting amount"
               name="startAmount"
               value={this.state.startAmount}
-              onChange={(value, event) => { this.handleChange(value, event); }}
-              onBlur={() => { this.handleBasicSettings(); }}
+              onChange={(value) => { this.handleStartAmount(value); }}
+              onBlur={() => { this.handleStartAmountSave(); }}
               theme={styles}
             />
-            <DatePicker
-              label="Start date"
-              name="startDate"
-              onChange={(value, event) => { this.handleDatepickerChange(value, event); }}
-              value={moment.utc(this.props.startDate).add(1, 'days').toDate()}
-              inputFormat={value => moment.utc(value).format('MMMM YYYY')}
+            <Dropdown
+              onChange={this.handleDateChange}
+              source={this.months}
+              value={moment.utc(this.props.startDate).month() + 1}
+              label="Starting month"
+              theme={styles}
+            />
+            <Dropdown
+              onChange={this.handleDateChange}
+              source={this.state.years}
+              value={parseFloat(moment.utc(this.props.startDate).year())}
+              label="Starting year"
               theme={styles}
             />
           </div>

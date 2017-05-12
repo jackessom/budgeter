@@ -11,7 +11,9 @@
 }
 
 .inputElement,
-.label {
+.label,
+.inputLabel,
+.inputInputElement {
   padding-left: var(--padding);
 }
 

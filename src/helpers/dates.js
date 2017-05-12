@@ -61,3 +61,22 @@ export function isBefore(dateToCheck, baseDate) {
 export function getTodaysMonth() {
   return getISODate(moment.utc(new Date()).year(), moment.utc(new Date()).month() + 1);
 }
+
+export function getArrayOfYears(currentStartDate) {
+  const years = [];
+  const todaysYear = moment.utc().year();
+  const currentStartYear = moment.utc(currentStartDate).year();
+  const diff = Math.abs(currentStartYear - todaysYear);
+  const ammountOfYears = 2 + diff + 5;
+  let startYear;
+  if (currentStartYear < todaysYear) {
+    startYear = currentStartYear - 2;
+  } else {
+    startYear = todaysYear - 2;
+  }
+  for (let i = 0; i < ammountOfYears; i += 1) {
+    years.push({ value: startYear + i, label: startYear + i });
+  }
+  console.log(diff);
+  return years;
+}
