@@ -1,4 +1,5 @@
-import { getNextMonth, getPreviousMonth } from '../helpers/dates';
+import { getNextMonth, getPreviousMonth, datesBeforeStart, isBefore } from '../helpers/dates';
+import { calculateCommonTotal } from '../helpers/calculateTotals';
 import * as types from '../constants/actionTypes';
 
 export const toggleSidebar = sidebarVisible => ({
@@ -6,19 +7,19 @@ export const toggleSidebar = sidebarVisible => ({
   sidebarVisible,
 });
 
-export const saveSettings = (settings) => {
-  const commonOutgoingTotal = Object.keys(settings.outgoings).reduce((prevTotal, key) => (
-    prevTotal + parseFloat(settings.outgoings[key].value)
-  ), 0);
-  const commonIncomingTotal = Object.keys(settings.incomings).reduce((prevTotal, key) => (
-    prevTotal + parseFloat(settings.incomings[key].value)
-  ), 0);
-  const newSettings = Object.assign({}, settings, {
-    commonTotal: commonIncomingTotal - commonOutgoingTotal,
-  });
+export const removeDatesBeforeStart = (dateKeysArray, allDates) => {
+  const newDates = Object.keys(allDates).reduce((prevObj, item) => {
+    if (dateKeysArray.indexOf(item) === -1) {
+      const newObj = Object.assign({}, prevObj, {
+        [item]: allDates[item],
+      });
+      return newObj;
+    }
+    return prevObj;
+  }, {});
   return {
-    type: types.SAVE_SETTINGS,
-    settings: newSettings,
+    type: types.REMOVE_DATES_BEFORE_START,
+    newDates,
   };
 };
 
@@ -75,3 +76,23 @@ export const saveMonth = (date, dateObject) => {
     dateObject: newDateObject,
   };
 };
+
+export const saveSettings = settings => (
+  (dispatch, getState) => {
+    const newSettings = Object.assign({}, settings, {
+      commonTotal: calculateCommonTotal(settings.outgoings, settings.incomings),
+    });
+    dispatch({
+      type: types.SAVE_SETTINGS,
+      settings: newSettings,
+    });
+    const { dates, currentDate } = getState();
+    const dateKeysArray = datesBeforeStart(settings.startDate, dates);
+    if (dateKeysArray.length > 0) {
+      dispatch(removeDatesBeforeStart(dateKeysArray, dates));
+    }
+    if (isBefore(currentDate, settings.startDate)) {
+      dispatch(goToDate(settings.startDate));
+    }
+  }
+);

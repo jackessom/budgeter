@@ -77,6 +77,22 @@ export function getArrayOfYears(currentStartDate) {
   for (let i = 0; i < ammountOfYears; i += 1) {
     years.push({ value: startYear + i, label: startYear + i });
   }
-  console.log(diff);
   return years;
+}
+
+export function dateObjectsExistsBefore(dateToCheck, allDates) {
+  const datesThatAreBefore = Object.keys(allDates).filter(
+    date => isBefore(date, dateToCheck),
+  );
+  if (datesThatAreBefore.length > 0) {
+    return true;
+  }
+  return false;
+}
+
+export function datesBeforeStart(dateToCheck, allDates) {
+  const datesThatAreBefore = Object.keys(allDates).filter(
+    date => isBefore(date, dateToCheck),
+  );
+  return datesThatAreBefore;
 }

@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Input, ListSubHeader, AppBar, Dropdown } from 'react-toolbox';
+import { Input, ListSubHeader, AppBar, Dropdown, Dialog } from 'react-toolbox';
 import { saveSettings, toggleSidebar } from '../../actions';
 import DynamicList from '../../components/dynamicList/DynamicList';
 import guid from '../../helpers/guid';
-import { getISODate, getTodaysMonth, getArrayOfYears } from '../../helpers/dates';
+import {
+  getISODate,
+  getTodaysMonth,
+  getArrayOfYears,
+  dateObjectsExistsBefore,
+} from '../../helpers/dates';
 import styles from './settings.css';
 import { padding } from '../../styles/base.css';
 
@@ -19,6 +24,10 @@ class Settings extends Component {
       startDate: this.props.startDate,
       startAmount: this.props.startAmount,
       years: getArrayOfYears(this.props.startDate),
+      startDateValidation: {
+        startDate: this.props.startDate,
+        showDialog: false,
+      },
     };
     this.months = [
       { value: 1, label: 'January' },
@@ -38,6 +47,11 @@ class Settings extends Component {
     this.handleStartAmount = this.handleStartAmount.bind(this);
     this.handleDynamicListChange = this.handleDynamicListChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.closeDialog = this.closeDialog.bind(this);
+    this.dialogActions = [
+      { label: 'Ok', onClick: this.handleDateChange },
+      { label: 'Cancel', onClick: this.closeDialog },
+    ];
   }
 
   componentDidMount() {
@@ -48,19 +62,37 @@ class Settings extends Component {
     this.setState({ years: getArrayOfYears(nextProps.startDate) });
   }
 
+  closeDialog() {
+    const newStartDateValidation = Object.assign({}, this.state.startDateValidation, {
+      showDialog: false,
+    });
+    this.setState({ startDateValidation: newStartDateValidation });
+  }
+
   handleDateChange(value) {
-    const valueNumber = value;
-    let month = moment.utc(this.props.startDate).month() + 1;
-    let year = moment.utc(this.props.startDate).year();
-    if (valueNumber > 12) {
-      year = valueNumber;
+    let startDate;
+    if (!isNaN(value)) {
+      let month = moment.utc(this.props.startDate).month() + 1;
+      let year = moment.utc(this.props.startDate).year();
+      if (value > 12) { year = value; } else { month = value; }
+      startDate = getISODate(year, month);
+      if (dateObjectsExistsBefore(startDate, this.props.allDates)) {
+        this.setState({
+          startDateValidation: {
+            startDate,
+            showDialog: true,
+          },
+        });
+        return;
+      }
     } else {
-      month = valueNumber;
+      startDate = this.state.startDateValidation.startDate;
     }
     const newSettings = Object.assign({}, this.createSettingsObject(), {
-      startDate: getISODate(year, month),
+      startDate,
     });
     this.props.saveSettings(newSettings);
+    this.closeDialog();
   }
 
   handleStartAmount(value) {
@@ -164,6 +196,14 @@ class Settings extends Component {
           </div>
           {lists}
         </form>
+        <Dialog
+          active={this.state.startDateValidation.showDialog}
+          actions={this.dialogActions}
+          onOverlayClick={() => { this.closeDialog(); }}
+        >
+          <p>{'Items in months before your new start date will be removed permanently.'}</p>
+          <p>{'Are you sure you want to continue?'}</p>
+        </Dialog>
       </div>
     );
   }
@@ -175,6 +215,7 @@ Settings.propTypes = {
   startAmount: PropTypes.number,
   outgoings: PropTypes.object,
   incomings: PropTypes.object,
+  allDates: PropTypes.object,
   saveSettings: PropTypes.func.isRequired,
   closeSidebar: PropTypes.func.isRequired,
 };
@@ -185,6 +226,7 @@ Settings.defaultProps = {
   startAmount: 0,
   outgoings: {},
   incomings: {},
+  allDates: {},
 };
 
 const mapStateToProps = state => ({
@@ -193,6 +235,7 @@ const mapStateToProps = state => ({
   startAmount: state.settings.startAmount,
   outgoings: state.settings.outgoings,
   incomings: state.settings.incomings,
+  allDates: state.dates,
 });
 
 const mapDispatchToProps = dispatch => ({
