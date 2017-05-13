@@ -4,6 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var OfflinePlugin = require('offline-plugin');
+var ProgressBarPlugin = require('progress-bar-webpack-plugin');
 
 var reactToolboxVariables = {
   'color-primary': 'var(--palette-blue-500)',
@@ -115,7 +116,11 @@ module.exports = {
       ],
       copyUnmodified: true
     }),
-    new OfflinePlugin()
+    new OfflinePlugin(),
+    new ProgressBarPlugin({
+      format: '  build [:bar] ' + ':percent' + ' (:elapsed seconds)',
+      clear: false
+    })
   ],
   postcss: function (webpack) {
     return [
